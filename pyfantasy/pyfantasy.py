@@ -224,12 +224,16 @@ class League:
                 if int(tr.get('players', dict()).get('@count', 0)) == 1:
                     player_list = [player_list]
                 for player in player_list:
-                    out = dict()
-                    out['transaction_id'] = tr['transaction_id']
-                    out['timestamp'] = ts
-                    out['type'] = player['transaction_data']['type']
-                    out['source_type'] = player['transaction_data']['source_type']
-                    out['source_team'] = player['transaction_data'].get('source_team_name', 'N/A')
+                    out = {
+                        'transaction_id': tr['transaction_id'],
+                        'timestamp': ts,
+                        'type': player['transaction_data']['type'],
+                        'source_type': player['transaction_data']['source_type'],
+                        'source_team': player['transaction_data'].get(
+                            'source_team_name', 'N/A'
+                        ),
+                    }
+
                     out['destination_type'] = (player['transaction_data']['destination_type'])
                     out['destination_team'] = player['transaction_data'].get('destination_team_name', 'N/A')
                     out['player_name'] = player['name']['full']
@@ -296,7 +300,7 @@ class Team:
             if player.selected_position != new:
                 update_data.append((player, player.selected_position, new))
 
-        if len(update_data) == 0:
+        if not update_data:
             print('No update to be done!')
             return
 
@@ -377,9 +381,7 @@ class Team:
                 if ((player.selected_position in ['IR', 'IR+']) and (player.selected_position == pos_u[0])):
                     G.add_edge(pos_u, player.name['full'], weight=1001)
 
-        best = nx.max_weight_matching(G)
-
-        return best
+        return nx.max_weight_matching(G)
 
     def __repr__(self):
         return u'<Team: {} - {}>'.format(self.name, self.league.name)

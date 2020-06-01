@@ -49,8 +49,7 @@ def json_get_data(filename):
     """Get data from json file
     """
     with open(filename) as fp:
-        json_data = json.load(fp)
-        return json_data
+        return json.load(fp)
 
     return False
 
@@ -59,8 +58,7 @@ def yaml_get_data(filename):
     """Get data from .yml file
     """
     with open(filename, 'rb') as fd:
-        yaml_data = yaml.load(fd)
-        return yaml_data
+        return yaml.load(fd)
     return False
 
 

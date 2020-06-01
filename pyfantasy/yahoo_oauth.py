@@ -105,10 +105,12 @@ class OAuth2():
         """
         encoded_credentials = base64.b64encode(
             ('{0}:{1}'.format(self.consumer_key, self.consumer_secret)).encode('utf-8'))
-        headers = {'Authorization': 'Basic {0}'.format(encoded_credentials.decode('utf-8')),
-            'Content-Type': 'application/x-www-form-urlencoded'}
-
-        return headers
+        return {
+            'Authorization': 'Basic {0}'.format(
+                encoded_credentials.decode('utf-8')
+            ),
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
 
     def oauth2_access_parser(self, raw_access):
         """Parse oauth2 access
@@ -119,10 +121,8 @@ class OAuth2():
         self.refresh_token = parsed_access['refresh_token']
         self.guid = parsed_access['xoauth_yahoo_guid']
 
-        credentials = {'access_token': self.access_token, 'token_type': self.token_type,
-            'refresh_token': self.refresh_token, 'guid': self.guid}
-
-        return credentials
+        return {'access_token': self.access_token, 'token_type': self.token_type,
+                'refresh_token': self.refresh_token, 'guid': self.guid}
 
     def refresh_access_token(self, ):
         """Refresh access token
